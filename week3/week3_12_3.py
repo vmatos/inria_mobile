@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import numpy as np
 import sympy as sym
 
 """
@@ -106,3 +107,22 @@ sym.pprint(H_beta, use_unicode=True)
 
 sym.pprint("\nH_GPS:", use_unicode=True)
 sym.pprint(H_GPS, use_unicode=True)
+
+h = h_z.col_join(h_beta).col_join(h_GPS)
+H = H_z.col_join(H_beta).col_join(H_GPS)
+
+""" Get matrices """
+def H_X(X_k_1, L_track):
+    return np.array( H.subs([(x_k,X_k_1[0,0]),(y_k,X_k_1[1,0]),(L,L_track), ('pi',np.pi)]) )
+    
+def f_X_u(X_k_1, u):
+    return np.array( f.subs([(x_k,X_k_1[0,0]), (y_k,X_k_1[1,0]), (u_k,u[0,0]),(v_k, u[1,0])])) 
+    
+def get_Fx():
+    return np.array( F_x ) 
+    
+def get_Fu():
+    return np.array( F_u ) 
+    
+def h_X(X_k, L_track):
+    return np.array( h.subs([(x_k,X_k[0,0]),(y_k,X_k[1,0]),(L,L_track), ('pi',np.pi)]) )
